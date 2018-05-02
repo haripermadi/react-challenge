@@ -33,6 +33,13 @@ class Resto extends Component {
   componentDidMount () {
     this.getData()
   }
+  checkStatus = () => {
+    let token = localStorage.getItem('token')
+    console.log('token===',token)
+    if(token === null) {
+      this.props.history.push('/login')
+    }
+  }
   render() {
     return (
       <div>
@@ -40,14 +47,13 @@ class Resto extends Component {
         <div className="restodiv">
           { this.state.data.map(resto => {
             return (
-              <Link key={resto.restaurant.id} to ={`/detail/${resto.restaurant.id}`}>
-              <div className="resto-list">
-              {/* <h2>detail/{resto.restaurant.id}</h2> */}
+              <div  key={resto.restaurant.id} className="resto-list">
                 <img src={resto.restaurant.thumb} alt=""/>
                 <h3>{resto.restaurant.name}</h3> 
+                  <Link to ={`/detail/${resto.restaurant.id}`} onClick={this.checkStatus}>
+                  Detail
+                  </Link>
               </div>
-              {/* <Route path="/detail/:id" component={DetailPage} data={resto.restaurant}/> */}
-              </Link>
             )
           }) }
         </div>

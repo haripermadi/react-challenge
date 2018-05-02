@@ -59,6 +59,7 @@ class DetailPage extends Component {
             <img src={this.state.image} alt=""/>
           </div>
           <div className="container">
+          {console.log('bname===', this.state.name)}
             <p>Restaurant Name: {this.state.name}</p>
             <p>Location: {this.state.location}</p>
             <p>Cuisines: {this.state.cuisines}</p>
