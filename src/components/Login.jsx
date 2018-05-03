@@ -9,21 +9,18 @@ class Login extends Component {
     }
   }
   handleChange = (e) => {
-    // console.log('event==', e)
     e.preventDefault()
     this.setState({
       [e.target.name] : e.target.value
     })
   }
   loginButton = () => {
-    // e.preventDefault()
     let {history} = this.props
     let user = {
       username: this.state.username,
       password: this.state.password
     }
     let random = Math.ceil(Math.random()*10000000)
-    // console.log('data input==', user)
     let token = user.username + random
     console.log(token)
     localStorage.setItem('token', 'hahaha')

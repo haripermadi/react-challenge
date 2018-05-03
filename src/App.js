@@ -16,13 +16,18 @@ class App extends Component {
       message: 'Foodies'
     }
   }
+  logOut () {
+    localStorage.removeItem('token')
+    window.location.reload()
+  }
+
   render() {
     return (
       <Router>
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <img src={restologo} className="App-logo" alt="logo" />
+          <img src={restologo} className="App-logo-main" alt="logo" />
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">{this.state.message}</h1>
         </header>
@@ -34,9 +39,12 @@ class App extends Component {
             <li>
               <Link to="/about">About</Link>
             </li>
+            {localStorage.getItem('token')?
+            <li onClick={this.logOut} style={{cursor:'pointer', color:'blue'}}>Logout</li>:
             <li>
               <Link to="/login">Login</Link>
             </li>
+            }
           </ul>
         </div>
         <Switch>

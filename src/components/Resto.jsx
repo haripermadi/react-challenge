@@ -2,14 +2,21 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import './Resto.css'
 import {Link} from 'react-router-dom'
+import store from '../store'
 
 class Resto extends Component {
   constructor () {
     super ();
     this.state = {
       message: 'Foods in Jakarta',
-      data: []
+      data: store.getState()
     }
+    store.subscribe(() => {
+      const newData = store.getState()
+      this.setState({
+        data:newData[0]
+      })
+    })
   }
   getData () {
     axios({
@@ -20,10 +27,13 @@ class Resto extends Component {
       }
 
     }).then(response => {
-      console.log('response api==', response.data.restaurants)
-      this.setState({
-        data : response.data.restaurants
+      // console.log('response api==', response.data.restaurants)
+      console.log('before==', this.state.data)
+      store.dispatch({
+        type: 'Get_Resto_Data',
+        payload: response.data.restaurants
       })
+      console.log('after==', this.state.data)
     }).catch(error => {
       console.log(error)
     })
@@ -39,18 +49,21 @@ class Resto extends Component {
     }
   }
   render() {
+    let restoss = store.getState()
     return (
       <div>
         <h1>{ this.state.message }</h1>
         <div className="restodiv">
+        {console.log('data state==', restoss)}
           { this.state.data.map(resto => {
             return (
               <div  key={resto.restaurant.id} className="resto-list">
                 <img src={resto.restaurant.thumb} alt=""/>
                 <h3>{resto.restaurant.name}</h3> 
+                { localStorage.getItem('token')?
                   <Link to ={`/detail/${resto.restaurant.id}`} onClick={this.checkStatus}>
                   Detail
-                  </Link>
+                  </Link>:<Link to={'/login'}>Login to see detail!</Link> }
               </div>
             )
           }) }

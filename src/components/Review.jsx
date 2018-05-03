@@ -12,7 +12,6 @@ class Review extends Component {
   }
   getData () {
     let restoid = +this.props.location.search.slice(1)
-    console.log('id==', typeof restoid)
     axios({
       method: 'get',
       url: `https://developers.zomato.com/api/v2.1/reviews?res_id=${restoid}`,
@@ -21,7 +20,6 @@ class Review extends Component {
       }
 
     }).then(response => {
-      console.log('response review==', response.data.user_reviews)
       this.setState({
         data : response.data.user_reviews
       })
@@ -47,7 +45,7 @@ class Review extends Component {
                 <hr/>
                 <p>{value.review.review_text}</p>
                 <small>
-                {/* <p>-{value.review.user.name}</p> */}
+                <p>-{value.review.user.name}</p>
                 </small>
               </div>
             )
