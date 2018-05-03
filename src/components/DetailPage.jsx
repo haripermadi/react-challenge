@@ -19,8 +19,8 @@ class DetailPage extends Component {
     }
     store.subscribe(() => {
       const idResto = this.props.match.params.id
-      const dataRestoNew = store.getState()
-      dataRestoNew[0].map(detail => {
+      const dataRestoNew = store.getState().dataResto
+      dataRestoNew.map(detail => {
         if(detail.restaurant.id === idResto){
           this.setState({
             name: detail.restaurant.name,
@@ -45,7 +45,7 @@ class DetailPage extends Component {
 
     }).then(response => {
       store.dispatch({
-        type: 'Get_Resto_Data',
+        type: 'GET_RESTO_DATA',
         payload: response.data.restaurants
       })
       console.log('detail after===', store.getState())

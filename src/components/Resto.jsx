@@ -9,12 +9,12 @@ class Resto extends Component {
     super ();
     this.state = {
       message: 'Foods in Jakarta',
-      data: store.getState()
+      data: store.getState().dataResto
     }
     store.subscribe(() => {
-      const newData = store.getState()
+      const newData = store.getState().dataResto
       this.setState({
-        data:newData[0]
+        data:newData
       })
     })
   }
@@ -30,7 +30,7 @@ class Resto extends Component {
       // console.log('response api==', response.data.restaurants)
       console.log('before==', this.state.data)
       store.dispatch({
-        type: 'Get_Resto_Data',
+        type: 'GET_RESTO_DATA',
         payload: response.data.restaurants
       })
       console.log('after==', this.state.data)

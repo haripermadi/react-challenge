@@ -47,16 +47,17 @@ class App extends Component {
             }
           </ul>
         </div>
+        <hr/>
         <Switch>
-        <Route exact path="/" component={Resto}/>
-        <Route path="/about" component={About}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/detail/:id" component={DetailPage}/>
-        <Route path="*" 
-        render = {() => (
-          <h1>Page does not exist!</h1>
-        )}
-        />
+          <Route exact path="/" component={Resto}/>
+          <Route path="/about" component={About}/>
+          <Route path="/login" component={Login}/>
+          <Route path="/detail/:id" component={DetailPage}/>
+          <Route path="*" 
+            render = {() => (
+              <h1>Page does not exist!</h1>
+            )}
+          />
         </Switch>
       </div>
       </Router>

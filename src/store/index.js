@@ -1,11 +1,17 @@
 import {createStore} from 'redux'
 
-const dataResto = []
-
-const reducers =(state=dataResto, action) => {
+const reducers =(state={dataResto:[], dataReview:[]}, action) => {
   switch(action.type) {
-    case 'Get_Resto_Data':
-    return [...state, action.payload]
+    case 'GET_RESTO_DATA':
+    return ({
+      ...state,
+      dataResto: action.payload
+    })
+    case 'GET_RESTO_REVIEW':
+    return ({
+      ...state,
+      dataReview: action.payload
+    })
     default:
     return state
   }

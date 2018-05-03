@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import './Resto.css'
-
+import store from '../store'
 class Review extends Component {
   constructor () {
     super ();
@@ -9,6 +9,13 @@ class Review extends Component {
       message: 'Foods in Jakarta',
       data: []
     }
+    store.subscribe(() => {
+      const restoReview = store.getState().dataReview
+      this.setState({
+        data : restoReview
+      })
+      
+    })
   }
   getData () {
     let restoid = +this.props.location.search.slice(1)
@@ -20,8 +27,9 @@ class Review extends Component {
       }
 
     }).then(response => {
-      this.setState({
-        data : response.data.user_reviews
+      store.dispatch({
+        type: 'GET_RESTO_REVIEW',
+        payload: response.data.user_reviews
       })
     }).catch(error => {
       console.log(error)
