@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import './Resto.css'
+import {Link, Route} from 'react-router-dom'
+import Menu from './Menu'
+import Review from './Review'
 
 class DetailPage extends Component {
   constructor () {
@@ -67,6 +70,23 @@ class DetailPage extends Component {
             <p>Rating: {this.state.rating}</p>
           </div>
         </div>
+        <hr/>
+        <div>
+          <ul>
+            <li>
+              {/* <Link to ={`${this.props.match.url}`}>Menu</Link> */}
+              <Link to={{
+                pathname:`${this.props.match.url}`,
+                search: `${this.props.match.params.id}`
+              }}>Review</Link>
+            </li>
+            <li>
+              <Link to ={`${this.props.match.url}/menu`}>Menu</Link>
+            </li>
+          </ul>
+        </div>
+        <Route exact path={`${this.props.match.url}`} component={Review} />
+        <Route path={`${this.props.match.url}/menu`} component={Menu} />
       </div>
     );
   }

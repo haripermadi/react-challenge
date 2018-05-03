@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import './Resto.css'
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom'
-
-import DetailPage from './DetailPage'
+import {Link} from 'react-router-dom'
 
 class Resto extends Component {
   constructor () {
