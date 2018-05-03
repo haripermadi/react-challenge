@@ -14,7 +14,6 @@ class Review extends Component {
       headers: {
         'user-key': '0bd221047f44b2055e1e1e69efa43a14'
       }
-
     }).then(response => {
       this.props.getRestoReview(response.data.user_reviews)
     }).catch(error => {
