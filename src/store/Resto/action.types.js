@@ -1,0 +1,2 @@
+export const GET_RESTO_DATA = 'GET_RESTO_DATA'
+export const GET_RESTO_REVIEW = 'GET_RESTO_REVIEW'

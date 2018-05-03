@@ -4,7 +4,9 @@ import './Resto.css'
 import {Link, Route} from 'react-router-dom'
 import Menu from './Menu'
 import Review from './Review'
-import store from '../store'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {getRestoData} from '../store/Resto/action.resto'
 
 class DetailPage extends Component {
   constructor () {
@@ -17,24 +19,8 @@ class DetailPage extends Component {
       image: '',
       rating: ''
     }
-    store.subscribe(() => {
-      const idResto = this.props.match.params.id
-      const dataRestoNew = store.getState().dataResto
-      dataRestoNew.map(detail => {
-        if(detail.restaurant.id === idResto){
-          this.setState({
-            name: detail.restaurant.name,
-            location: detail.restaurant.location.address,
-            cuisines: detail.restaurant.cuisines,
-            avgCost: detail.restaurant.average_cost_for_two,
-            image: detail.restaurant.thumb,
-            rating: detail.restaurant.user_rating.rating_text
-          })
-        }
-      })
-    })
   }
-
+  
   getRestoDetail () {
     axios({
       method: 'get',
@@ -42,33 +28,44 @@ class DetailPage extends Component {
       headers: {
         'user-key': '0bd221047f44b2055e1e1e69efa43a14'
       }
-
     }).then(response => {
-      store.dispatch({
-        type: 'GET_RESTO_DATA',
-        payload: response.data.restaurants
-      })
-      console.log('detail after===', store.getState())
+      this.props.getRestoData(response.data.restaurants)
     }).catch(error => {
       console.log(error)
     })
   }
+  readRestoList () {
+    const idResto = this.props.match.params.id
+    const dataRestoNew = this.props.listResto
+    dataRestoNew.map(detail => {
+      if(detail.restaurant.id === idResto){
+        this.setState({
+          name: detail.restaurant.name,
+          location: detail.restaurant.location.address,
+          cuisines: detail.restaurant.cuisines,
+          avgCost: detail.restaurant.average_cost_for_two,
+          image: detail.restaurant.thumb,
+          rating: detail.restaurant.user_rating.rating_text
+        })
+      }
+    })
+  }
+
   componentDidMount () {
     this.getRestoDetail()
+    this.readRestoList()
   }
 
   render() {
     return (
       <div>
         <h1>Detail Restaurant!!!</h1>
-        {console.log('detail----', store.getState())}
         <h2>resto id: {this.props.match.params.id}</h2>
         <div className="restodiv">
           <div className="container">
             <img src={this.state.image} alt=""/>
           </div>
           <div className="container">
-          {console.log('bname===', this.state.name)}
             <p>Restaurant Name: {this.state.name}</p>
             <p>Location: {this.state.location}</p>
             <p>Cuisines: {this.state.cuisines}</p>
@@ -79,11 +76,10 @@ class DetailPage extends Component {
         <hr/>
         <div>
           <ul>
-              <li>
-                <Link to ={`${this.props.match.url}`}>Menu</Link>
-              </li>
             <li>
-              {/* <Link to ={`${this.props.match.url}`}>Menu</Link> */}
+              <Link to ={`${this.props.match.url}`}>Menu</Link>
+            </li>
+            <li>
               <Link to={{
                 pathname:`${this.props.match.url}/review`,
                 search: `${this.props.match.params.id}`
@@ -98,4 +94,12 @@ class DetailPage extends Component {
   }
 }
 
-export default DetailPage;
+const mapStateToProps = (state) => ({
+  listResto : state.dataResto
+})
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getRestoData
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps) (DetailPage);

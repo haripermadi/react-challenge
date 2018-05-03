@@ -1,22 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import './Resto.css'
-import store from '../store'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {getRestoReview} from '../store/Resto/action.resto'
+
 class Review extends Component {
-  constructor () {
-    super ();
-    this.state = {
-      message: 'Foods in Jakarta',
-      data: []
-    }
-    store.subscribe(() => {
-      const restoReview = store.getState().dataReview
-      this.setState({
-        data : restoReview
-      })
-      
-    })
-  }
   getData () {
     let restoid = +this.props.location.search.slice(1)
     axios({
@@ -27,10 +16,7 @@ class Review extends Component {
       }
 
     }).then(response => {
-      store.dispatch({
-        type: 'GET_RESTO_REVIEW',
-        payload: response.data.user_reviews
-      })
+      this.props.getRestoReview(response.data.user_reviews)
     }).catch(error => {
       console.log(error)
     })
@@ -44,9 +30,8 @@ class Review extends Component {
     return (
       <div>
         <h2>Resto Review</h2>
-        {console.log('state data==',this.state.data)}
         <div className="restodiv">
-          {this.state.data.map(value => {
+          {this.props.listReview.map(value => {
             return (
               <div key={value.review.id} className="review-list">
                 <h4>Rating: {value.review.rating}</h4>
@@ -64,4 +49,12 @@ class Review extends Component {
   }
 }
 
-export default Review;
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getRestoReview
+}, dispatch)
+
+const mapStateToProps = (state) => ({
+  listReview : state.dataReview
+})
+
+export default connect(mapStateToProps, mapDispatchToProps) (Review);

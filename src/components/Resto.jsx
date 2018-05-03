@@ -2,22 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import './Resto.css'
 import {Link} from 'react-router-dom'
-import store from '../store'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {getRestoData} from '../store/Resto/action.resto'
 
 class Resto extends Component {
-  constructor () {
-    super ();
-    this.state = {
-      message: 'Foods in Jakarta',
-      data: store.getState().dataResto
-    }
-    store.subscribe(() => {
-      const newData = store.getState().dataResto
-      this.setState({
-        data:newData
-      })
-    })
-  }
   getData () {
     axios({
       method: 'get',
@@ -27,13 +16,7 @@ class Resto extends Component {
       }
 
     }).then(response => {
-      // console.log('response api==', response.data.restaurants)
-      console.log('before==', this.state.data)
-      store.dispatch({
-        type: 'GET_RESTO_DATA',
-        payload: response.data.restaurants
-      })
-      console.log('after==', this.state.data)
+      this.props.getRestoData(response.data.restaurants)
     }).catch(error => {
       console.log(error)
     })
@@ -49,13 +32,11 @@ class Resto extends Component {
     }
   }
   render() {
-    let restoss = store.getState()
     return (
       <div>
-        <h1>{ this.state.message }</h1>
+        <h1>Foods in Jakarta</h1>
         <div className="restodiv">
-        {console.log('data state==', restoss)}
-          { this.state.data.map(resto => {
+          { this.props.listResto.map(resto => {
             return (
               <div  key={resto.restaurant.id} className="resto-list">
                 <img src={resto.restaurant.thumb} alt=""/>
@@ -73,4 +54,12 @@ class Resto extends Component {
   }
 }
 
-export default Resto;
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  getRestoData
+}, dispatch)
+
+const mapStateToProps = (state) => ({
+  listResto : state.dataResto
+})
+
+export default connect(mapStateToProps, mapDispatchToProps) (Resto);
