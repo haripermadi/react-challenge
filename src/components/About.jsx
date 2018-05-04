@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './Resto.css'
+import Map from './Map'
 class About extends Component {
   render() {
     return (
       <div id="aboutPage">
-        <h1>About Page</h1>
-        <img src="https://images.pexels.com/photos/62097/pexels-photo-62097.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""/>
+        <h1>Who we are???</h1>
+        <h3>We are new built start up based on Jakarta.</h3>
+        <Map/>
       </div>
     );
   }
